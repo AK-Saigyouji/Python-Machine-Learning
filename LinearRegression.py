@@ -17,22 +17,22 @@ def gradient_descent(X, Y, learning_rate = 1.0, iterations = 1500,
     Args:
         X (ndarray): a 2D array of features for training data, where each row 
             is an obsevation and the columns are features. 
-        Y (array): an array of known values corresponding to each row in X
+        Y (array): an array of known values corresponding to each row in X.
         learning_rate (float): the proportion of the gradient update to use 
-            when updating weights (default: 1.0)
-        iterations (int): the number of updates to apply (default: 1500)  
+            when updating weights (default: 1.0).
+        iterations (int): the number of updates to apply (default: 1500).
         regularization (float): what proportion of the L2 norm of the weights
-            to include in the cost function (default: 0)
+            to include in the cost function (default: 0).
     Returns: 
-        weights (array): the final coefficients after running gradient descent
-        errors (array): the mean squared errors after each iteration
+        weights (array): the final coefficients after running gradient descent.
+        errors (array): the mean squared errors after each iteration.
     """
     
     error_history = np.empty(iterations)
     X_norm, mean, std = normalize(X)
     X_norm = insert_ones(X_norm)
     weights = initialize_weights(X_norm)
-    for n in xrange(iterations):
+    for n in range(iterations):
         error_history[n] = MSE(weights, X_norm, Y, regularization)
         weights = gradient_update(weights, X_norm, Y, learning_rate, 
                                   regularization)

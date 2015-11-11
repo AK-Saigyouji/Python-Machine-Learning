@@ -1,4 +1,8 @@
-from __future__ import division
+"""
+Implementations of logistic regression using either gradient descent or 
+BFGS as the optimization algorithm. 
+"""
+
 import numpy as np 
 from scipy.special import expit
 from scipy.optimize import fmin_bfgs
@@ -11,9 +15,9 @@ def BFGS(X, Y, regularization = 0):
     Args:
         X (ndarray): a 2D array of features for training data, where each row 
             is an obsevation and the columns are features. 
-        Y (array): an array of known values corresponding to each row in X 
+        Y (array): an array of known values corresponding to each row in X.
         regularization (float): what proportion of the L2 norm of the weights 
-            to include in the cost function (default: 0.0)
+            to include in the cost function (default: 0.0).
     Returns: 
         weights (array): the coefficients produced by the algorithm.
     """
@@ -49,7 +53,7 @@ def gradient_descent(X, Y, learning_rate = 1.0, iterations = 1500,
     X_norm, mean, std = normalize(X)
     X_norm = insert_ones(X_norm)
     weights = initialize_weights(X_norm)
-    for n in xrange(iterations):
+    for n in range(iterations):
         error_history[n] = cost(weights, X_norm, Y, regularization)
         weights = gradient_update(weights, X_norm, Y, learning_rate, 
                                   regularization)
@@ -77,7 +81,7 @@ def cost(weights, X, Y, regularization):
 
 def log(numArray):
     """ Logarithm extended to include 0 to avoid log of 0 errors."""
-    offset = 1e-10
+    offset = 1e-20
     return np.log(numArray + offset)
     
 def residual(weights, X, Y):
@@ -86,9 +90,6 @@ def residual(weights, X, Y):
 
 def sigmoid(X):
     """ Vectorized sigmoid/logistic function."""
-    # Could be implemented directly as 
-    # 1 / (1 + np.exp(-X))
-    # but this is unstable as exp(n) = inf for n > 709
     return expit(X)
     
 def normalize(X):
@@ -100,15 +101,12 @@ def normalize(X):
     
 def denormalize_weights(weights, mean, std):
     """ Undo the effects of normalization on the weights.""" 
-    #y = a_0 + a_1(x_1 - m_1 / std_1) + ... + a_n(x_n - m_n / std_n)
-    #y = a_0 - a_1*m_1/std_1 -...-a_n*m_n/std_n + a_1/std_1 x_1 + ... +a_n / std_n x_n 
     weights[0] -= sum(weights[1:] * mean / std)
     weights[1:] = weights[1:] / std
     return weights
 
 def insert_ones(X):
-    """ Insert a column of ones into the left side of X."""
-    # This step allows X to be a one-dimensional array. 
+    """ Insert a column of ones in front of the dataset X."""
     X = array_to_ndarray(X)
     num_rows = X.shape[0]
     return np.hstack((np.ones((num_rows, 1)), X))

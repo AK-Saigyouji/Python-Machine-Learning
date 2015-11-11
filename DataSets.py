@@ -17,7 +17,9 @@ def get_binary_data(rows, cols, scale = 50, add_noise = False, noise_var = 1.0):
         noise_var (float): the variance of the noise, if included (default = 1.0)
     Returns:
         Y (array): a 1D array of binary labels for the data
-        X (ndarray): a rows by cols ndarray of random i.i.d. data
+        X (array): a rows by cols ndarray of random i.i.d. data
+        weights (array): the weights applied to the columns of X
+            to generate Y
     """
     
     Z, X, weights = get_dense_data(rows = rows, cols = cols, 
@@ -39,10 +41,12 @@ def get_dense_data(rows, cols, scale = 50, add_noise = False, noise_var = 1.0):
         noise_var (float): the variance of the noise, if included
     Returns:
         Y (array): a 1D array of labels for the data
-        X (ndarray): a rows by cols ndarray of random i.i.d. data
+        X (array): a rows by cols ndarray of random i.i.d. data
+        weights (array): the weights applied to the columns of X
+            to generate Y
     """
     
-    X = np.array([norm.rvs(size = rows) for n in xrange(cols)]).transpose()
+    X = np.array([norm.rvs(size = rows) for n in range(cols)]).transpose()
     weights = norm.rvs(size = cols, scale = scale)
     noise = add_noise * norm.rvs(size = rows, scale = noise_var)
     Y = np.sum(X * weights, axis = 1) + noise
