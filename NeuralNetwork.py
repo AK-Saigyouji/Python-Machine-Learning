@@ -2,8 +2,10 @@ import numpy as np
 from scipy.special import expit
 from scipy.optimize import fmin_cg
 
+__all__ = ['NeuralNetModel', 'train_network']
+
 class NeuralNetModel():
-    """ Output of a neural network training algorithm. """
+    """ Output of a neural network training algorithm."""
     def __init__(self, neural_network):
         self._network = neural_network
         
@@ -84,8 +86,7 @@ class NeuralNetwork():
         for shape in self._shapes:
             matrix_size = shape[0] * shape[1]
             end_index = start_index + matrix_size
-            shaped_weights.append(flat_weights[start_index:end_index]
-                .reshape(shape))
+            shaped_weights.append(flat_weights[start_index:end_index].reshape(shape))
             start_index = end_index
         return shaped_weights
         
@@ -93,7 +94,7 @@ def train_network(X, Y, layers, regularization = 0, max_iters = 200):
     """ Train a neural network and return the model.
     
     Args:
-        X (array): data consisting of rows of features.
+        X (array): data consisting of rows of features. 
         Y (array): array of labels corresponding to each row in X.
             Must consist of integers from 0 to n for some integer n.
         layers (list): the number of features in each layer. The first
@@ -158,8 +159,7 @@ def back_propogate(flat_weights, X, label_matrix, network, regularization):
     if len(network.activations) == 0:
         forward_propogate(weights, X, network)
     deltas = get_deltas(weights, label_matrix, network)
-    weight_gradients = get_weight_gradients(weights, deltas, network, 
-                                            regularization)
+    weight_gradients = get_weight_gradients(weights, deltas, network, regularization)
     return weight_gradients
 
 def get_deltas(weights, label_matrix, network):
@@ -199,13 +199,13 @@ def process_labels(Y, num_labels):
         label_matrix[:,i] = 1 * (Y == i)
     return label_matrix
 
-def sigmoid(z):
-    """ Vectorized sigmoid/logistic function."""
-    return expit(z)
-    
 def sigmoid_gradient(z):
     """ Gradient of the sigmoid function."""
     return sigmoid(z) * (1 - sigmoid(z))
+
+def sigmoid(z):
+    """ Vectorized sigmoid/logistic function."""
+    return expit(z)
     
 def insert_ones(X):
     """ Insert a column of ones in front of the dataset X and return it."""
@@ -242,5 +242,3 @@ def check_input_validity(X, Y, layers):
     if not set(unique_labels) <= set(range(layers[-1])):
         raise ValueError("Labels in Y must be numbers from 0 and n, "
                          "where n is the final entry of layers.")
-        
-    
