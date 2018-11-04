@@ -1,5 +1,7 @@
 # Python-Machine-Learning
-Python implementation of common machine learning algorithms. Currently supports neural networks, logistic regression and linear regression. Datasets are expected to be Numpy arrays (Pandas dataframes count). 
+This is an old side project I did in my first year of learning programming, when I was considering data science as a career.
+
+Python implementation of common machine learning algorithms. Currently supports neural networks, logistic regression and linear regression. Datasets are expected to be Numpy arrays (Pandas dataframes count).
 
 ### NeuralNetwork.py
 Offers `train_network` to build a neural network on training data. Once trained, function returns a `NeuralNetModel` object with a `get_predictions` method for generating predictions on new datasets. "Neural Network.ipynb" contains an example of a network trained on the MNIST dataset of handwritten digits. 
